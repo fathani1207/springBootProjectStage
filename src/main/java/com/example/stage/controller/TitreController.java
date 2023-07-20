@@ -26,7 +26,6 @@ public class TitreController {
 
     @GetMapping("{titreId}")
     public Titre getTitre(@PathVariable("titreId") int id){
-        System.out.println(this.titreService.getTitre(id));
         return this.titreService.getTitre(id);
     }
 
