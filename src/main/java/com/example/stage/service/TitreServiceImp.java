@@ -1,6 +1,7 @@
 package com.example.stage.service;
 
 import com.example.stage.dao.TitreDAO;
+import com.example.stage.entity.Enterprise;
 import com.example.stage.entity.Titre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,12 @@ public class TitreServiceImp implements TitreService{
 
     private final TitreDAO titreDAO;
 
+    private final EnterpriseService enterpriseService;
+
     @Autowired
-    public TitreServiceImp(TitreDAO titreDAO) {
+    public TitreServiceImp(TitreDAO titreDAO, EnterpriseService enterpriseService) {
         this.titreDAO = titreDAO;
+        this.enterpriseService = enterpriseService;
     }
 
     @Override
@@ -27,25 +31,37 @@ public class TitreServiceImp implements TitreService{
 
     @Override
     @Transactional
-    public Titre getTitre(int id) {
+    public Titre getTitre(String id) {
         return this.titreDAO.findById(id);
     }
 
     @Override
     @Transactional
     public void addTitre(Titre titre) {
+        Enterprise enterprise = this.enterpriseService.getEnterprise(titre.getOwner().getId());
+        enterprise.addMyOwnTitre(titre);
+        enterprise = this.enterpriseService.getEnterprise(titre.getBuyer().getId());
+        if (enterprise != null){
+            enterprise.addTitreThatIBuy(titre);
+        }
         this.titreDAO.save(titre);
     }
 
     @Override
     @Transactional
     public void updateTitre(Titre titre) {
+        Enterprise enterprise = this.enterpriseService.getEnterprise(titre.getOwner().getId());
+        titre.setOwner(enterprise);
+        enterprise = this.enterpriseService.getEnterprise(titre.getBuyer().getId());
+        if (enterprise != null){
+            titre.setBuyer(enterprise);
+        }
         this.titreDAO.merge(titre);
     }
 
     @Override
     @Transactional
-    public void deleteTitre(int id) {
+    public void deleteTitre(String id) {
         this.titreDAO.deleteById(id);
     }
 }

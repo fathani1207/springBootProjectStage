@@ -9,12 +9,12 @@ public interface TitreDAO {
 
     List<Titre> findAll();
 
-    Titre findById(int id);
+    Titre findById(String id);
 
     void save(Titre titre);
 
     void merge(Titre titre);
 
-    void deleteById(int id);
+    void deleteById(String id);
 
 }

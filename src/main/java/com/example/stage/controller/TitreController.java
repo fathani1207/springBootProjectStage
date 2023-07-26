@@ -25,7 +25,7 @@ public class TitreController {
     }
 
     @GetMapping("{titreId}")
-    public Titre getTitre(@PathVariable("titreId") int id){
+    public Titre getTitre(@PathVariable("titreId") String id){
         return this.titreService.getTitre(id);
     }
 
@@ -40,7 +40,7 @@ public class TitreController {
     }
 
     @DeleteMapping("{titreId}")
-    public void deleteTitre(@PathVariable("titreId") Integer id){
+    public void deleteTitre(@PathVariable("titreId") String id){
         this.titreService.deleteTitre(id);
     }
 

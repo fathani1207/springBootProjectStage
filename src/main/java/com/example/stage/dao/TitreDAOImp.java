@@ -26,13 +26,13 @@ public class TitreDAOImp implements TitreDAO{
     }
 
     @Override
-    public Titre findById(int id) {
+    public Titre findById(String id) {
         return this.entityManager.find(Titre.class,id);
     }
 
     @Override
     public void save(Titre titre) {
-        this.entityManager.persist(titre);
+        this.entityManager.merge(titre);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TitreDAOImp implements TitreDAO{
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         this.entityManager.remove(this.findById(id));
     }
 }

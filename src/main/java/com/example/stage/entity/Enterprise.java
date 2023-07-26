@@ -25,6 +25,9 @@ public class Enterprise {
     @Column(name = "num_tel")
     private String numTel;
 
+    @Column(name = "prix_titre")
+    private float prixTitre;
+
     @OneToMany(mappedBy = "owner",
             cascade = CascadeType.ALL)
     private List<Titre> myOwnTitres;
@@ -75,6 +78,14 @@ public class Enterprise {
         this.numTel = numTel;
     }
 
+    public float getPrixTitre() {
+        return prixTitre;
+    }
+
+    public void setPrixTitre(float prixTitre) {
+        this.prixTitre = prixTitre;
+    }
+
     @JsonManagedReference(value = "owner")
     public List<Titre> getMyOwnTitres() {
         return myOwnTitres;
@@ -116,6 +127,7 @@ public class Enterprise {
                 ", nom='" + nom + '\'' +
                 ", address='" + address + '\'' +
                 ", numTel='" + numTel + '\'' +
+                ", prixTitre=" + prixTitre +
                 '}';
     }
 }

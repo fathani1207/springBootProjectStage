@@ -12,7 +12,6 @@ import java.util.List;
 public class EnterpriseServiceImp implements EnterpriseService {
 
     private final EnterpriseDAO enterpriseDAO;
-
     @Autowired
     public EnterpriseServiceImp(EnterpriseDAO enterpriseDAO) {
         this.enterpriseDAO = enterpriseDAO;
