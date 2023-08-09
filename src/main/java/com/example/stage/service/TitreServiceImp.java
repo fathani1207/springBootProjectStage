@@ -15,12 +15,9 @@ public class TitreServiceImp implements TitreService{
 
     private final TitreDAO titreDAO;
 
-    private final EnterpriseService enterpriseService;
-
     @Autowired
-    public TitreServiceImp(TitreDAO titreDAO, EnterpriseService enterpriseService) {
+    public TitreServiceImp(TitreDAO titreDAO) {
         this.titreDAO = titreDAO;
-        this.enterpriseService = enterpriseService;
     }
 
     @Override
@@ -38,24 +35,12 @@ public class TitreServiceImp implements TitreService{
     @Override
     @Transactional
     public void addTitre(Titre titre) {
-        Enterprise enterprise = this.enterpriseService.getEnterprise(titre.getOwner().getId());
-        enterprise.addMyOwnTitre(titre);
-        enterprise = this.enterpriseService.getEnterprise(titre.getBuyer().getId());
-        if (enterprise != null){
-            enterprise.addTitreThatIBuy(titre);
-        }
         this.titreDAO.save(titre);
     }
 
     @Override
     @Transactional
     public void updateTitre(Titre titre) {
-        Enterprise enterprise = this.enterpriseService.getEnterprise(titre.getOwner().getId());
-        titre.setOwner(enterprise);
-        enterprise = this.enterpriseService.getEnterprise(titre.getBuyer().getId());
-        if (enterprise != null){
-            titre.setBuyer(enterprise);
-        }
         this.titreDAO.merge(titre);
     }
 

@@ -22,6 +22,9 @@ public class Enterprise {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "num_tel")
     private String numTel;
 
@@ -68,6 +71,14 @@ public class Enterprise {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNumTel() {
@@ -126,6 +137,7 @@ public class Enterprise {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
                 ", numTel='" + numTel + '\'' +
                 ", prixTitre=" + prixTitre +
                 '}';

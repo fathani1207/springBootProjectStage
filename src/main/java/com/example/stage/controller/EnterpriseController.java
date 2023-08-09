@@ -43,4 +43,35 @@ public class EnterpriseController {
     public void deleteEnterprise(@PathVariable("enterpriseId") Integer id){
         this.enterpriseService.deleteEnterprise(id);
     }
+
+    @RequestMapping("/providers/{id}")
+    @GetMapping
+    public List<Enterprise> getProviders(@PathVariable("id") Integer id){
+        return this.enterpriseService.getProviders(id);
+    }
+
+    @RequestMapping("/providers/total/{id}")
+    @GetMapping
+    public float totalProvidersById(@PathVariable("id") int id){
+        return this.enterpriseService.totalTitresById(id);
+    }
+
+    @RequestMapping("/providers/percentage/{id}")
+    @GetMapping
+    public List<Float> providersPercentageById(@PathVariable("id") int id){
+        return this.enterpriseService.getPercentageById(id,"providers");
+    }
+
+    @RequestMapping("/buyers/{id}")
+    @GetMapping
+    public List<Enterprise> getBuyer(@PathVariable("id") Integer id){
+        return this.enterpriseService.getBuyers(id);
+    }
+
+    @RequestMapping("/buyers/percentage/{id}")
+    @GetMapping
+    public List<Float> buyerPercentageById(@PathVariable("id") int id){
+        return this.enterpriseService.getPercentageById(id,"buyers");
+    }
+
 }

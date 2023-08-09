@@ -2,6 +2,7 @@ package com.example.stage.dao;
 
 import com.example.stage.entity.Enterprise;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,8 +31,40 @@ public class EnterpriseDAOImp implements EnterpriseDAO {
     }
 
     @Override
+    public List<Enterprise> getProviders(int id) {
+        String hql = "select e from Enterprise e join Titre t on e.id = t.owner.id where t.buyer.id = :buyer_id";
+        TypedQuery<Enterprise> query = this.entityManager.createQuery(hql, Enterprise.class);
+        query.setParameter("buyer_id",id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Enterprise> getProvidersAll(int id) {
+        String sql = "select e.* from opv.enterprise e join opv.titre t on e.id = t.owner where t.buyer = :buyer_id";
+        Query query = this.entityManager.createNativeQuery(sql, Enterprise.class);
+        query.setParameter("buyer_id",id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Enterprise> getBuyers(int id) {
+        String hql = "select e from Enterprise e join Titre t on e.id = t.buyer.id where t.owner.id = :owner_id";
+        TypedQuery<Enterprise> query = this.entityManager.createQuery(hql, Enterprise.class);
+        query.setParameter("owner_id",id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Enterprise> getBuyersAll(int id) {
+        String sql = "select e.* from opv.enterprise e join opv.titre t on e.id = t.buyer where t.owner = :owner_id";
+        Query query = this.entityManager.createNativeQuery(sql, Enterprise.class);
+        query.setParameter("owner_id",id);
+        return query.getResultList();
+    }
+
+    @Override
     public void save(Enterprise enterprise) {
-        this.entityManager.persist(enterprise);
+        this.entityManager.merge(enterprise);
     }
 
     @Override
