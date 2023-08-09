@@ -1,6 +1,7 @@
 package com.example.stage.service;
 
 import com.example.stage.dao.TitreDAO;
+import com.example.stage.entity.Enterprise;
 import com.example.stage.entity.Titre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class TitreServiceImp implements TitreService{
 
     @Override
     @Transactional
-    public Titre getTitre(int id) {
+    public Titre getTitre(String id) {
         return this.titreDAO.findById(id);
     }
 
@@ -45,7 +46,7 @@ public class TitreServiceImp implements TitreService{
 
     @Override
     @Transactional
-    public void deleteTitre(int id) {
+    public void deleteTitre(String id) {
         this.titreDAO.deleteById(id);
     }
 }

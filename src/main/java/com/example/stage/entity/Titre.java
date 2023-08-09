@@ -9,14 +9,10 @@ import jakarta.persistence.*;
 public class Titre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private String id;
 
-    @Column(name = "valeur")
-    private float valeur;
-
-    @ManyToOne(cascade = {CascadeType.DETACH,
+    @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.REFRESH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
@@ -29,24 +25,12 @@ public class Titre {
     public Titre() {
     }
 
-    public Titre(float valeur, Enterprise owner, Enterprise buyer) {
-        this.valeur = valeur;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public float getValeur() {
-        return valeur;
-    }
-
-    public void setValeur(float valeur) {
-        this.valeur = valeur;
     }
 
     @JsonBackReference(value = "owner")
@@ -71,7 +55,6 @@ public class Titre {
     public String toString() {
         return "Titre{" +
                 "id=" + id +
-                ", valeur=" + valeur +
                 ", owner=" + owner +
                 ", buyer=" + buyer +
                 '}';

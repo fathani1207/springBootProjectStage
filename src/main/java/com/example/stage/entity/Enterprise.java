@@ -22,8 +22,14 @@ public class Enterprise {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "num_tel")
     private String numTel;
+
+    @Column(name = "prix_titre")
+    private float prixTitre;
 
     @OneToMany(mappedBy = "owner",
             cascade = CascadeType.ALL)
@@ -67,12 +73,28 @@ public class Enterprise {
         this.address = address;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getNumTel() {
         return numTel;
     }
 
     public void setNumTel(String numTel) {
         this.numTel = numTel;
+    }
+
+    public float getPrixTitre() {
+        return prixTitre;
+    }
+
+    public void setPrixTitre(float prixTitre) {
+        this.prixTitre = prixTitre;
     }
 
     @JsonManagedReference(value = "owner")
@@ -115,7 +137,9 @@ public class Enterprise {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
                 ", numTel='" + numTel + '\'' +
+                ", prixTitre=" + prixTitre +
                 '}';
     }
 }

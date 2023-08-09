@@ -9,12 +9,12 @@ public interface TitreService {
 
     List<Titre> getTitres();
 
-    Titre getTitre(int id);
+    Titre getTitre(String id);
 
     void addTitre(Titre titre);
 
     void updateTitre(Titre titre);
 
-    void deleteTitre(int id);
+    void deleteTitre(String id);
 
 }
