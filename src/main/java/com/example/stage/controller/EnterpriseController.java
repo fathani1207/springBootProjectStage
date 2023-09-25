@@ -6,6 +6,7 @@ import com.example.stage.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/enterprise")
@@ -56,22 +57,24 @@ public class EnterpriseController {
         return this.enterpriseService.totalTitresById(id);
     }
 
-    @RequestMapping("/providers/percentage/{id}")
-    @GetMapping
-    public List<Float> providersPercentageById(@PathVariable("id") int id){
-        return this.enterpriseService.getPercentageById(id,"providers");
-    }
-
     @RequestMapping("/buyers/{id}")
     @GetMapping
     public List<Enterprise> getBuyer(@PathVariable("id") Integer id){
         return this.enterpriseService.getBuyers(id);
     }
 
-    @RequestMapping("/buyers/percentage/{id}")
+    @RequestMapping("/percentage/{id}")
     @GetMapping
-    public List<Float> buyerPercentageById(@PathVariable("id") int id){
-        return this.enterpriseService.getPercentageById(id,"buyers");
+    public Map<String,Float> getPercentageById(@PathVariable("id") int id, @RequestParam String type){
+        return this.enterpriseService.getPercentageAll(id,type);
     }
+
+    @RequestMapping("/percentage/sector/{id}")
+    @GetMapping
+    public Map<String,Float> getPercentageBySector(@PathVariable("id") int id, @RequestParam String type, @RequestParam String sector){
+        return this.enterpriseService.getPercentageBySector(id,type,sector);
+    }
+
+
 
 }
