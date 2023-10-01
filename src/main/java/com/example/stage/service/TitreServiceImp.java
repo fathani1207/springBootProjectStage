@@ -1,7 +1,6 @@
 package com.example.stage.service;
 
 import com.example.stage.dao.TitreDAO;
-import com.example.stage.entity.Enterprise;
 import com.example.stage.entity.Titre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

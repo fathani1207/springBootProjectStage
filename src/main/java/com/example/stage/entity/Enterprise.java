@@ -1,6 +1,7 @@
 package com.example.stage.entity;
 
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -39,6 +40,13 @@ public class Enterprise {
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Titre> titreThatIBuy;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.DETACH, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "secteur")
+    private Secteur secteur;
 
     public Enterprise(String nom, String address, String numTel) {
         this.nom = nom;
@@ -113,6 +121,14 @@ public class Enterprise {
 
     public void setTitreThatIBuy(List<Titre> titreThatIBuy) {
         this.titreThatIBuy = titreThatIBuy;
+    }
+
+    public Secteur getSecteur() {
+        return secteur;
+    }
+
+    public void setSecteur(Secteur secteur) {
+        this.secteur = secteur;
     }
 
     public void addMyOwnTitre(Titre owner){

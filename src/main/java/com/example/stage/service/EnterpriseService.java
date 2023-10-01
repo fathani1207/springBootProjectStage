@@ -17,7 +17,9 @@ public interface EnterpriseService {
 
     List<Enterprise> getBuyers(int id);
 
-    List<Float> getPercentageById(int id, String type);
+    Map<String,Float> getPercentageAll(int id, String type);
+
+    Map<String,Float> getPercentageBySector(int id, String type, String sector);
 
     void addEnterprise(Enterprise enterprise);
 

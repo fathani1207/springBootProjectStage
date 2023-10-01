@@ -2,13 +2,16 @@ package com.example.stage.service;
 
 import com.example.stage.dao.EnterpriseDAO;
 import com.example.stage.entity.Enterprise;
+import com.example.stage.entity.Secteur;
 import com.example.stage.entity.Titre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -18,10 +21,13 @@ public class EnterpriseServiceImp implements EnterpriseService {
 
     private final TitreService titreService;
 
+    private final SecteurService secteurService;
+
     @Autowired
-    public EnterpriseServiceImp(EnterpriseDAO enterpriseDAO, TitreService titreService) {
+    public EnterpriseServiceImp(EnterpriseDAO enterpriseDAO, TitreService titreService, SecteurService secteurService) {
         this.enterpriseDAO = enterpriseDAO;
         this.titreService = titreService;
+        this.secteurService = secteurService;
     }
 
     @Override
@@ -60,38 +66,55 @@ public class EnterpriseServiceImp implements EnterpriseService {
 
     @Override
     @Transactional
-    public List<Float> getPercentageById(int id, String type){
-        List<Float> percentage = new ArrayList<>();
+    public Map<String,Float> getPercentageAll(int id, String type){
+        Map<String,Float> percentage = new HashMap<>();
+        List<Secteur> secteurList = this.secteurService.getSecteurs();
         List<Enterprise> enterpriseList = new ArrayList<>();
-        List<Enterprise> enterpriseListDuplicate = new ArrayList<>();
-        Enterprise owner = null;
         if (type.equals("providers")){
-            enterpriseList = this.enterpriseDAO.getProviders(id);
-            enterpriseListDuplicate = this.enterpriseDAO.getProvidersAll(id);
+            enterpriseList = this.enterpriseDAO.getProvidersAll(id);
         } else {
             if (type.equals("buyers")){
-                enterpriseList =this.enterpriseDAO.getBuyers(id);
-                enterpriseListDuplicate =this.enterpriseDAO.getBuyersAll(id);
-                owner = this.getEnterprise(id);
+                enterpriseList =this.enterpriseDAO.getBuyersAll(id);
             }
         }
         float s;
-        for (Enterprise e: enterpriseList) {
+        for (Secteur secteur: secteurList) {
             s = 0;
-            if (type.equals("providers")){
-                for (Enterprise eDuplicated : enterpriseListDuplicate){
-                    if (eDuplicated.getId() == e.getId()){
-                        s++;
-                    }
-                }
-            } else {
-                for (Enterprise eDuplicated : enterpriseListDuplicate) {
-                    if (eDuplicated.getId() == e.getId()) {
-                        s++;
-                    }
+            for (Enterprise enterprise : enterpriseList){
+                if (enterprise.getSecteur().getId() == secteur.getId()){
+                    s++;
                 }
             }
-            percentage.add(s);
+            percentage.put(secteur.getNom(),s);
+        }
+        return percentage;
+    }
+
+    @Override
+    public Map<String, Float> getPercentageBySector(int id, String type, String sector) {
+        Map<String,Float> percentage = new HashMap<>();
+        List<Enterprise> enterpriseList = new ArrayList<>();
+        List<Enterprise> enterpriseListDuplicated = new ArrayList<>();
+        if (type.equals("providers")){
+            enterpriseListDuplicated = this.enterpriseDAO.getProvidersAll(id);
+            enterpriseList = this.enterpriseDAO.getProviders(id);
+        } else {
+            if (type.equals("buyers")){
+                enterpriseListDuplicated =this.enterpriseDAO.getBuyersAll(id);
+                enterpriseList = this.enterpriseDAO.getBuyers(id);
+            }
+        }
+        float s;
+        for (Enterprise enterprise : enterpriseList) {
+            if (enterprise.getSecteur().getNom().equals(sector)){
+                s = 0;
+                for (Enterprise eDuplicated : enterpriseListDuplicated){
+                    if (enterprise.getId() == eDuplicated.getId()){
+                        s++;
+                    }
+                }
+                percentage.put(enterprise.getNom(),s);
+            }
         }
         return percentage;
     }
